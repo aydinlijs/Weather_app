@@ -1,13 +1,60 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+* {
+  font-family: "Quicksand", sans-serif;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.Polaris-Page__Content {
+  position: relative;
+}
+.Polaris-Page__Content #favButton {
+  padding: 5px 10px;
+  position: absolute;
+  border-radius: 20px;
+  right: 20px;
+  top: 20px;
+  background-color: #f4f6f8;
+  cursor: pointer;
+}
+.nav-bar a {
+  padding: 8px 20px;
+  background-color: cadetblue;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  margin-right: 20px;
+}
+
+.fav-boxes {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.fav-box {
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.4);
+  background-color: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  width: 30%;
+  align-self: flex-start;
+  border-radius: 2px;
+}
+.fav-box .Polaris-Button {
+  min-height: 15px;
+  margin-top: 10px;
+  margin-bottom: -5px;
+}
+#autocomplete {
+  width: 100%;
+  height: 48px;
+  padding: 15px;
+  border-radius: 2px;
+  border: none;
+  box-shadow: var(
+    --p-card-shadow,
+    0 0 0 1px rgba(63, 63, 68, 0.05),
+    0 1px 3px 0 rgba(63, 63, 68, 0.15)
+  );
+}
+
+.Polaris-Page-Header {
+  padding-top: 1rem;
 }
