@@ -3,78 +3,78 @@ import Forecast from "./Forecast";
 import Search from "./Search";
 import Favorites from "./Favorites";
 import Navigation from "./Navigation";
-import weather from "./../const/api";
-import { BrowserRouter, Route } from "react-router-dom";
+import { Router, Route } from "react-router-dom";
+import history from "../const/nav";
+import { connect } from "react-redux";
+import { Page, Frame } from "@shopify/polaris";
+import {
+    fetchForecast,
+    displayErrorMessage
+} from "./../redux/actions";
 
 class App extends React.Component {
-    state = {
-        currentForecast: "",
-        forecastStatus: 1,
-        notFound: false
-    };
-
     componentDidMount = () => {
         this.currentPosition();
     };
 
     currentPosition = () => {
-        this.setState({ forecastStatus: 1, notFound: false })
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(this.showPosition, () => {
-                this.setState({ forecastStatus: 3 });
-            });
-        } else {
-            this.setState({ forecastStatus: 4 });
+        if (navigator.onLine) {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    this.props.fetchForecast(position.coords, false)
+                }, () => {
+                    this.props.displayErrorMessage(2);
+                });
+            } else {
+                this.props.displayErrorMessage(3);
+            }
+        }
+        else {
+            this.props.displayErrorMessage(1);
         }
     };
-    
-    showPosition = async position => {
-        const { latitude, longitude } = position.coords;
-        await weather
-            .get(
-                `weather?lat=${latitude}&lon=${longitude}&units=metric&APPID=95e119746283ccb68ff96ce7a9ce3f6b`
-            )
-            .then(res => {
-                this.setState({ currentForecast: res.data });
-            });
-        this.setState({ forecastStatus: 2 });
-    };
 
-    searchByWord = async keyword => {
-        this.setState({ forecastStatus: 1 });
-        await weather
-            .get(
-                `weather?q=${keyword}&units=metric&APPID=95e119746283ccb68ff96ce7a9ce3f6b`
-            )
-            .then(res => {
-                this.setState({ currentForecast: res.data, notFound: false });
-            })
-            .catch(res => {
-                this.setState({ notFound: true, needReset: false });
-            });
-        this.setState({ forecastStatus: 2 });
+    searchByWord = keyword => {
+        this.props.fetchForecast({ keyword }, true);
     };
 
     render() {
         return (
-            <React.Fragment>
-                <BrowserRouter>
-                    <Navigation />
+            <Frame>
+                <Router history={history}>
+                    <Page>
+                        <Navigation />
+                    </Page>
                     <Route exact path="/">
-                        <Forecast
-                            status={this.state.forecastStatus}
-                            notFound={this.state.notFound}
-                            forecast={this.state.currentForecast}
-                        />
-                        <Search searchByWord={this.searchByWord} />
+                        <Page title="Your weather app">
+                            <Forecast
+                                status={this.props.status}
+                                notFound={this.props.notFound}
+                                forecast={this.props.currentForecast}
+                            />
+                            {navigator.onLine ? (
+                                <Search searchByWord={this.searchByWord} />
+                            ) : null}
+                        </Page>
                     </Route>
                     <Route path="/Favs">
-                        <Favorites />
+                        <Page title="Your favorite locations">
+                            <Favorites />
+                        </Page>
                     </Route>
-                </BrowserRouter>
-            </React.Fragment>
+                </Router>
+            </Frame>
         );
     }
 }
 
-export default App;
+const mapStateToProps = ({ forecast }) => {
+    return {
+        currentForecast: forecast.currentForecast,
+        status: forecast.status
+    };
+};
+export default connect(mapStateToProps, {
+    fetchForecast,
+    displayErrorMessage
+})(App);

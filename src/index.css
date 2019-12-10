@@ -5,6 +5,7 @@
 .Polaris-Page__Content {
   position: relative;
 }
+
 .Polaris-Page__Content #favButton {
   padding: 5px 10px;
   position: absolute;
@@ -14,6 +15,7 @@
   background-color: #f4f6f8;
   cursor: pointer;
 }
+
 .nav-bar a {
   padding: 8px 20px;
   background-color: cadetblue;
@@ -24,37 +26,49 @@
 }
 
 .fav-boxes {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
 }
-.fav-box {
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.4);
+
+.fav-boxes .fav-box {
+  height: 200px;
+  -webkit-box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.4);
+          box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.4);
   background-color: white;
   padding: 20px;
   margin-bottom: 20px;
-  width: 30%;
-  align-self: flex-start;
+  width: 32%;
   border-radius: 2px;
 }
-.fav-box .Polaris-Button {
+
+.fav-boxes .fav-box:nth-child(3n + 2) {
+  margin: 0 2%;
+}
+
+.fav-boxes .fav-box .Polaris-Button {
   min-height: 15px;
   margin-top: 10px;
   margin-bottom: -5px;
 }
+
 #autocomplete {
   width: 100%;
   height: 48px;
   padding: 15px;
   border-radius: 2px;
   border: none;
-  box-shadow: var(
-    --p-card-shadow,
-    0 0 0 1px rgba(63, 63, 68, 0.05),
-    0 1px 3px 0 rgba(63, 63, 68, 0.15)
-  );
+  -webkit-box-shadow: var(--p-card-shadow, 0 0 0 1px rgba(63, 63, 68, 0.05), 0 1px 3px 0 rgba(63, 63, 68, 0.15));
+          box-shadow: var(--p-card-shadow, 0 0 0 1px rgba(63, 63, 68, 0.05), 0 1px 3px 0 rgba(63, 63, 68, 0.15));
 }
 
 .Polaris-Page-Header {
   padding-top: 1rem;
 }
+
+#forecastCard {
+  margin-bottom: 30px;
+}
+/*# sourceMappingURL=index.css.map */

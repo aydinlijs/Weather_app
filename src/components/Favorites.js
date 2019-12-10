@@ -1,8 +1,11 @@
 import React from 'react';
-import { Page, Button } from "@shopify/polaris";
+import { Button, Card, Toast } from "@shopify/polaris";
+import { connect } from 'react-redux';
+import { fetchForecast } from './../redux/actions';
+import history from './../const/nav';
 
 class Favorites extends React.Component {
-    state = { favs: [] };
+    state = { favs: [], toast: false };
 
     componentDidMount() {
         this.fetchFavs();
@@ -15,36 +18,52 @@ class Favorites extends React.Component {
         })
     }
 
+    seeForecast = (id) => {
+        const fav = this.state.favs.find(fa => fa.id === id);
+        this.props.fetchForecast({ keyword: fav.name }, true);
+        history.push('/')
+    }
+
     removeFromFavs = (id) => {
         const favs = JSON.parse(localStorage.getItem("favLocations"));
         const newFavs = favs.filter(fav => fav.id !== id);
         localStorage.setItem("favLocations", JSON.stringify(newFavs));
         this.fetchFavs();
+        this.setState({ toast: true });
     };
 
     renderFavs = () => {
         return this.state.favs.length ? this.state.favs.map(fav => (
             <div className="fav-box" key={fav.id}>
                 <p><b>Name</b>: {fav.name}</p>
-                <p><b>Latitude</b>: {fav.coord.lat}</p>
-                <p><b>Longitude:</b> {fav.coord.lon}</p>
+                <p><b>Latitude</b>: {fav.coords.lat}</p>
+                <p><b>Longitude:</b> {fav.coords.lon}</p>
                 <p><b>ID:</b> {fav.id}</p>
-                <Button>Fetch forecast</Button>                
+                <Button onClick={() => this.seeForecast(fav.id)}>Fetch forecast</Button>
                 <Button onClick={() => this.removeFromFavs(fav.id)}>Remove from favs</Button>
             </div>
-        )) : <p>You yet have no fav locations</p>
+        )) : <Card sectioned><p>You yet have no fav locations</p></Card>
+    }
+
+    toggleToast = () => {
+        this.setState({ toast: false })
     }
 
 
     render() {
+        const toastMarkup = this.state.toast ? (
+            <Toast
+                content={'Removed from favorites'}
+                onDismiss={this.toggleToast}
+            />
+        ) : null;
         return (
-            <Page title="Your favorite locations">
-                <div className="fav-boxes">
-                    {this.renderFavs()}
-                </div>
-            </Page>
+            <div className="fav-boxes">
+                {this.renderFavs()}
+                {toastMarkup}
+            </div>
         )
     }
 }
 
-export default Favorites;
+export default connect(null, { fetchForecast })(Favorites);

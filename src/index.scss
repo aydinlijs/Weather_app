@@ -1,0 +1,66 @@
+* {
+  font-family: "Quicksand", sans-serif;
+}
+
+.Polaris-Page__Content {
+  position: relative;
+  #favButton {
+    padding: 5px 10px;
+    position: absolute;
+    border-radius: 20px;
+    right: 20px;
+    top: 20px;
+    background-color: #f4f6f8;
+    cursor: pointer;
+  }
+}
+.nav-bar a {
+  padding: 8px 20px;
+  background-color: cadetblue;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  margin-right: 20px;
+}
+
+.fav-boxes {
+  display: flex;
+  flex-wrap: wrap;
+  .fav-box {
+    height: 200px;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.4);
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 32%;
+    border-radius: 2px;
+    &:nth-child(3n + 2) {
+      margin: 0 2%;
+    }
+    .Polaris-Button {
+      min-height: 15px;
+      margin-top: 10px;
+      margin-bottom: -5px;
+    }
+  }
+}
+#autocomplete {
+  width: 100%;
+  height: 48px;
+  padding: 15px;
+  border-radius: 2px;
+  border: none;
+  box-shadow: var(
+    --p-card-shadow,
+    0 0 0 1px rgba(63, 63, 68, 0.05),
+    0 1px 3px 0 rgba(63, 63, 68, 0.15)
+  );
+}
+
+.Polaris-Page-Header {
+  padding-top: 1rem;
+}
+
+#forecastCard {
+  margin-bottom: 30px;
+}
